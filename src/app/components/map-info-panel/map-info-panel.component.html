@@ -14,13 +14,10 @@
   </div>
   <div class="flex justify-content-center align-items-center pt-1 gap-2">
     <div>
+      @if(coordinates.getValue()) {
+
       <p-button [matMenuTriggerFor]="menu"> Open with </p-button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <a [href]="getStreetViewUrl()" target="_blank" class="py-1"
-            >Google Street View</a
-          >
-        </button>
         <button mat-menu-item>
           <a [href]="getMapsUrl()" target="_blank" class="py-1">Google Maps</a>
         </button>
@@ -29,7 +26,13 @@
             >Openstreet Maps</a
           >
         </button>
+        <button mat-menu-item>
+          <a [href]="getStreetViewUrl()" target="_blank" class="py-1"
+            >Google Street View</a
+          >
+        </button>
       </mat-menu>
+      }
     </div>
     <button pButton [outlined]="true" (click)="onClose()">Close</button>
   </div>

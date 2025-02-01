@@ -1,11 +1,19 @@
-import { Feature, GeoJsonProperties, Geometry } from 'geojson';
+import { Feature, GeoJsonProperties, Geometry, Point } from 'geojson';
 import * as L from 'leaflet';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 
-import { Component, input, OnDestroy, OnInit, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+} from '@angular/core';
 
+import { LocationService } from '../../services/location.service';
 import { MAP_TILES } from './map.tiles';
 
 @Component({
@@ -16,6 +24,8 @@ import { MAP_TILES } from './map.tiles';
   styleUrl: './map.component.scss',
 })
 export class MapComponent implements OnInit, OnDestroy {
+  #locationService = inject(LocationService);
+
   markerClick = output<GeoJsonProperties>();
   dataToDisplay = input<any[]>([]);
   displayDialog: boolean = false;
@@ -54,25 +64,23 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  private addMapData(setView = false): void {
+  private addMapData(): void {
     this.dataLayerGroup.clearLayers();
 
-    const featureCollection: GeoJSON.FeatureCollection = {
-      type: 'FeatureCollection',
-      features: this.dataToDisplay(),
-    };
+    this.dataToDisplay().forEach((data: GeoJSON.FeatureCollection) => {
+      L.geoJSON(<GeoJSON.FeatureCollection>data, {
+        onEachFeature: this.onEachFeature,
+      }).addTo(this.dataLayerGroup);
 
-    L.geoJSON(<GeoJSON.FeatureCollection>featureCollection, {
-      onEachFeature: this.onEachFeature,
-    }).addTo(this.dataLayerGroup);
+      const points = data.features.filter(
+        (feature: any) => feature.geometry.type === 'Point'
+      );
 
-    if (setView && featureCollection.features.length > 0) {
-      const datumProperties = featureCollection.features[0].properties;
-      this.map.setView([
-        datumProperties?.['LATITUDE'],
-        datumProperties?.['LONGITUDE'],
-      ]);
-    }
+      if (points.length > 0) {
+        const coordinates = (points[0].geometry as Point).coordinates;
+        this.map.setView([coordinates[1], coordinates[0]]);
+      }
+    });
   }
 
   private onEachFeature = (
@@ -80,6 +88,10 @@ export class MapComponent implements OnInit, OnDestroy {
     layer: L.Layer
   ) => {
     layer.on('click', () => {
+      if (feature.geometry.type === 'Point') {
+        const { coordinates } = feature.geometry as Point;
+        this.#locationService.setLocation([coordinates[1], coordinates[0]]);
+      }
       this.markerClick.emit(feature.properties);
     });
   };
