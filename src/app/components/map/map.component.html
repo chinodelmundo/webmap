@@ -1,0 +1,24 @@
+<div id="map"></div>
+<p-dialog header="Map Action" [modal]="true" [(visible)]="displayDialog">
+  <div class="flex flex-column justify-content-center align-items-center">
+    <span class="font-semibold">Do action for this location?</span>
+    <div class="p-3 text-xs">
+      <div class="flex gap-2">
+        <span>Longitude:</span>
+        <span>{{ selectedLatLong?.lng }}</span>
+      </div>
+      <div class="flex gap-2">
+        <span>Latitude:</span>
+        <span>{{ selectedLatLong?.lat }}</span>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <p-button label="Yes" (click)="onDialogSubmit()" />
+      <p-button
+        label="No"
+        severity="secondary"
+        (onClick)="displayDialog = false"
+      />
+    </div>
+  </div>
+</p-dialog>

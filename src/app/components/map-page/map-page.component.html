@@ -1,0 +1,22 @@
+<div class="flex flex-column">
+  <!-- <div class="p-2 flex flex-column gap-2">
+      <app-map-filters
+        [filterOptions]="filterOptions"
+        (onFilterUpdate)="onFilterUpdate($event)"
+      />
+      <span>{{ dataToDisplay.length }} records found.</span>
+      @if(exceededMaxData()) {
+      <div class="text-red-600 warning-message">
+        Please add more filters to lessen the data to be displayed.
+      </div>
+      }
+    </div> -->
+
+  <app-map
+    [dataToDisplay]="dataToDisplay"
+    (markerClick)="onMarkerClick($event)"
+    class="flex-grow-1"
+  ></app-map>
+  <span>meow</span>
+</div>
+<app-map-info-panel [info]="info" (close)="onClose()"></app-map-info-panel>
