@@ -10,7 +10,6 @@ import {
   input,
   OnChanges,
   OnDestroy,
-  OnInit,
   output,
   SimpleChanges,
 } from '@angular/core';

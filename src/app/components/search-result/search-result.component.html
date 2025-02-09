@@ -1,0 +1,7 @@
+<p-card>
+  <span>{{item()?.properties?.['display_name']}}</span>
+  <div class="flex flex-column pt-1">
+    <span>Lat: {{item()?.geometry?.coordinates?.[0]}}</span>
+    <span>Lng: {{item()?.geometry?.coordinates?.[1]}}</span>
+  </div>
+</p-card>
