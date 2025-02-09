@@ -16,7 +16,7 @@ import { SearchResultComponent } from '../../search-result';
 })
 export class SidebarComponent {
   #searchService = inject(SearchService);
-  #results = new BehaviorSubject<GeoJSON.Feature[]>([]);
+  #results = new BehaviorSubject<GeoJSON.Feature<GeoJSON.Point>[]>([]);
 
   searchValue: string = '';
   results$ = this.#results.asObservable();
