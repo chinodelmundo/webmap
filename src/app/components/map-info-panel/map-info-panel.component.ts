@@ -11,8 +11,7 @@ import {
   output,
 } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-
-import { LocationService } from '../../services/location.service';
+import { LocationService } from '@services/location.service';
 
 @Component({
   selector: 'app-map-info-panel',

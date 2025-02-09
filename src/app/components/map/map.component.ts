@@ -8,12 +8,14 @@ import {
   Component,
   inject,
   input,
+  OnChanges,
   OnDestroy,
   OnInit,
   output,
+  SimpleChanges,
 } from '@angular/core';
+import { LocationService } from '@services/location.service';
 
-import { LocationService } from '../../services/location.service';
 import { MAP_TILES } from './map.tiles';
 
 @Component({
@@ -23,7 +25,7 @@ import { MAP_TILES } from './map.tiles';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent implements OnChanges, OnDestroy {
   #locationService = inject(LocationService);
 
   markerClick = output<GeoJsonProperties>();
@@ -37,14 +39,18 @@ export class MapComponent implements OnInit, OnDestroy {
   private dataLayerGroup = L.layerGroup();
   selectedLatLong?: L.LatLng;
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.initMap();
   }
 
   private initMap(): void {
+    if (this.map) {
+      this.map.remove();
+    }
+
     this.map = L.map('map', {
       layers: [MAP_TILES.osm],
-    }).setView(this.centroid, 9);
+    }).setView(this.centroid, 11);
 
     const baseMaps = {
       OpenStreetMap: MAP_TILES.osm,

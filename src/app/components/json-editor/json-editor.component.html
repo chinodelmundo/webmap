@@ -1,0 +1,15 @@
+<div class="json-editor">
+  <textarea
+    [(ngModel)]="jsonInput"
+    rows="100"
+    cols="25"
+    placeholder="Enter your JSON here"
+  ></textarea>
+
+  <p-button label="Update Map" (click)="parseJson()" />
+
+  @if(errorMessage) {
+
+  <div class="error-message">{{ errorMessage }}</div>
+  }
+</div>

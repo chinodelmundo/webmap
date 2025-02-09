@@ -1,4 +1,7 @@
-<app-header />
+<app-header (onSidebarToggle)="handleSidebarToggle()" />
 <div class="pt-6">
   <router-outlet></router-outlet>
 </div>
+<p-drawer [(visible)]="showSidebar" header="Drawer">
+  <app-sidebar />
+</p-drawer>

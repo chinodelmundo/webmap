@@ -1,4 +1,4 @@
-<div class="flex flex-column">
+<div class="flex">
   <!-- <div class="p-2 flex flex-column gap-2">
       <app-map-filters
         [filterOptions]="filterOptions"
@@ -17,6 +17,8 @@
     (markerClick)="onMarkerClick($event)"
     class="flex-grow-1"
   ></app-map>
-  <span>meow</span>
+  @if(showEditPanel$ | async) {
+  <app-json-editor />
+  }
 </div>
 <app-map-info-panel [info]="info" (close)="onClose()"></app-map-info-panel>
